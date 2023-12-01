@@ -1,0 +1,23 @@
+- name: Install SQL
+  apt:
+    name:
+      - mariadb-server
+      - python3-pymysql
+    state: present
+
+- name: Edit the maria-db.conf 
+  copy:
+    content: |
+      default-storage-engine = innodb
+      innodb_file_per_table = on
+      max_connections = 4096
+      collation-server = utf_general_ci
+      character-set-server = utf8
+    dest: /etc/mysql/mariadb.conf.d/99-openstack.cnf
+    mode: "0755"
+
+- name: Restart the mariadb-server
+  service:
+     name: mysql
+     state: restarted
+     enabled: yes

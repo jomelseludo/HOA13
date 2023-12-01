@@ -1,0 +1,21 @@
+---
+- hosts: all
+  become: true
+  pre_tasks:
+
+  - name: Update (Ubuntu)
+    apt:
+      state: latest
+      update_cache: yes
+    changed_when: false
+    when: ansible_distribution == "Ubuntu"
+
+- hosts: ubuntuserver
+  become: true
+  roles:
+    - NTP
+    - Openstack
+    - SQL
+    - MessageQ
+    - Memcached
+    - Etcd
